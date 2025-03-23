@@ -42,3 +42,13 @@ Thumbs.db
 .nx/workspace-data
 
 test-output
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+
+# Postgres Data  
+/pg
