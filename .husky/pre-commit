@@ -1,0 +1,8 @@
+echo "-----------------------------------"
+echo "auto-formatting code..."
+echo "-----------------------------------"
+
+npx nx format:write
+git add .
+
+echo "\nYou can now push your code..."

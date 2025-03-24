@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org outhan-chazima --project node-nestjs apps/rest-api/dist/ && sentry-cli sourcemaps upload --org outhan-chazima --project node-nestjs apps/rest-api/dist/"
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org outhan-chazima --project node-nestjs apps/rest-api/dist/ && sentry-cli sourcemaps upload --org outhan-chazima --project node-nestjs apps/rest-api/dist/",
+    "prepare": "husky"
   },
   "private": true,
   "devDependencies": {
@@ -27,6 +28,7 @@
     "@types/node": "~18.16.9",
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^9.0.0",
+    "husky": "^9.1.7",
     "jest": "^29.7.0",
     "jest-environment-node": "^29.7.0",
     "nx": "20.6.2",
