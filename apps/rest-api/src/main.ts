@@ -1,5 +1,5 @@
 // Import this first to ensure that the instrument module is loaded first for proper lgging in sentry
-import './instrument';
+import './sentry-config';
 
 // Now import other modules
 import { Logger } from '@nestjs/common';
@@ -7,7 +7,7 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import compression from 'compression';
 import helmet from 'helmet';
-import { AppModule } from './app/app.module';
+import { AppModule } from './modules/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

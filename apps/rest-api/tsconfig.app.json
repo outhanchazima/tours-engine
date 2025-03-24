@@ -13,7 +13,7 @@
   },
   "include": [
     "src/**/*.ts",
-    "src/instrument.js"
+    "src/sentry-config.ts"
   ],
   "exclude": [
     "out-tsc",

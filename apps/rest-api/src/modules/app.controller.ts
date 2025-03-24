@@ -2,8 +2,6 @@ import { Controller, Get } from '@nestjs/common';
 
 @Controller()
 export class AppController {
-  constructor() {}
-
   @Get('health')
   getHealth() {
     return { message: 'Tours Booking Server is up and running' };
