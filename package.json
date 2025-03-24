@@ -8,6 +8,7 @@
   },
   "private": true,
   "devDependencies": {
+    "@compodoc/compodoc": "^1.1.26",
     "@eslint/js": "^9.8.0",
     "@nestjs/schematics": "^11.0.2",
     "@nestjs/testing": "^11.0.12",
