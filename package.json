@@ -2,7 +2,9 @@
   "name": "@tours-engine/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org outhan-chazima --project node-nestjs apps/rest-api/dist/ && sentry-cli sourcemaps upload --org outhan-chazima --project node-nestjs apps/rest-api/dist/"
+  },
   "private": true,
   "devDependencies": {
     "@eslint/js": "^9.8.0",
@@ -20,6 +22,7 @@
     "@swc/core": "~1.5.7",
     "@swc/helpers": "~0.5.11",
     "@swc/jest": "~0.2.36",
+    "@types/compression": "^1.7.5",
     "@types/jest": "^29.5.12",
     "@types/node": "~18.16.9",
     "eslint": "^9.8.0",
@@ -47,11 +50,13 @@
     "@nestjs/platform-express": "^11.0.12",
     "@nestjs/swagger": "^11.0.7",
     "@nestjs/typeorm": "^11.0.0",
+    "@sentry/cli": "^2.42.4",
     "@sentry/nestjs": "^9.8.0",
     "@sentry/profiling-node": "^9.8.0",
     "axios": "^1.6.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "compression": "^1.8.0",
     "helmet": "^8.1.0",
     "passport": "^0.7.0",
     "pg": "^8.14.1",

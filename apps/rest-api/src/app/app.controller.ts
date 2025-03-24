@@ -1,16 +1,15 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor() {}
 
-  @Get()
-  getData() {
-    return this.appService.getData();
+  @Get('health')
+  getHealth() {
+    return { message: 'Tours Booking Server is up and running' };
   }
 
-  @Get('/debug-sentry')
+  @Get('debug-sentry')
   getError() {
     throw new Error('My first Sentry error!');
   }

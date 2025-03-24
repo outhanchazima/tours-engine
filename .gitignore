@@ -52,3 +52,5 @@ Thumbs.db
 
 # Postgres Data  
 /pg
+# Sentry Config File
+.sentryclirc
