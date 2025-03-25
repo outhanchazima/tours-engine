@@ -4,7 +4,9 @@
   "license": "MIT",
   "scripts": {
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org outhan-chazima --project node-nestjs apps/rest-api/dist/ && sentry-cli sourcemaps upload --org outhan-chazima --project node-nestjs apps/rest-api/dist/",
-    "prepare": "husky"
+    "prepare": "husky",
+    "build": "nx run-many --target=build --all --parallel",
+    "serve": "nx run-many --target=serve --all --parallel"
   },
   "private": true,
   "devDependencies": {

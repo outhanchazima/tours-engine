@@ -1,32 +1,13 @@
-#Build Stage
-FROM node:22.14.0 as build
+FROM node:22.14.0 
 
 WORKDIR /app
 
-# Copy package.json and package-lock.json 
-COPY package.json package-lock.json ./
+# Copy only the built files and package files
+COPY apps/rest-api/dist/ ./dist
+COPY package*.json ./
 
-# Install dependencies
+# Install only production dependencies
 RUN npm install
 
-# Copy the rest of the application
-COPY . .
-
-# Build the application
-RUN npx build rest-api
-
-# Production Stage
-FROM node:22.14.0
-
-WORKDIR /app
-
-# Copy the build articacts from the build stage
-COPY --from=build /app/dist/apps/rest-api /app
-COPY --from=build /app/node_modules /app/node_modules
-COPY --from=build /app/package.json /app/package.json
-
-# Expose the port the app runs on
 EXPOSE 3000
-
-# Serve the app
-CMD ["node", "main.js"]
+CMD ["node", "dist/main.js"]
