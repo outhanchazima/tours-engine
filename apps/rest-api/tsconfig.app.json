@@ -15,7 +15,8 @@
   },
   "include": [
     "src/**/*.ts",
-    "src/sentry-config.ts"
+    "src/sentry-config.ts",
+    "src/features/database/services/.gitkeep"
   ],
   "exclude": [
     "out-tsc",

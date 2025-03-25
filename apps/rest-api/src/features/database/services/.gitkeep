@@ -1,0 +1,119 @@
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { In, Repository } from 'typeorm';
+import { Permission } from '../entities/permission.entity';
+import { Role } from '../entities/role.entity';
+
+@Injectable()
+export class InitialSeedService {
+  constructor(
+    @InjectRepository(Role)
+    private readonly roleRepository: Repository<Role>,
+    @InjectRepository(Permission)
+    private readonly permissionRepository: Repository<Permission>
+  ) {}
+
+  async seed(): Promise<void> {
+    await this.seedPermissions();
+    await this.seedRoles();
+  }
+
+  private async seedPermissions(): Promise<void> {
+    const defaultPermissions = [
+      'user:read',
+      'user:write',
+      'tour:read',
+      'tour:write',
+      'booking:read',
+      'booking:write',
+      'payment:read',
+      'payment:write',
+    ];
+
+    await Promise.all(
+      defaultPermissions.map(async (permName) => {
+        try {
+          const existingPerm = await this.permissionRepository.findOne({
+            where: { name: permName },
+          });
+
+          if (!existingPerm) {
+            const permission = this.permissionRepository.create({
+              name: permName,
+              description: `Permission to ${permName.replace(':', ' ')}`,
+            });
+            await this.permissionRepository.save(permission);
+            console.log(`Created permission: ${permName}`);
+          }
+        } catch (error) {
+          console.warn(`Failed to process permission ${permName}:`, error);
+        }
+      })
+    );
+  }
+
+  private async seedRoles(): Promise<void> {
+    const defaultRoles = [
+      {
+        name: 'admin',
+        description: 'System Administrator',
+        permissions: [
+          'user:read',
+          'user:write',
+          'tour:read',
+          'tour:write',
+          'booking:read',
+          'booking:write',
+          'payment:read',
+          'payment:write',
+        ],
+      },
+      {
+        name: 'user',
+        description: 'Regular User',
+        permissions: ['tour:read', 'booking:read', 'booking:write'],
+      },
+    ];
+
+    await Promise.all(
+      defaultRoles.map(async (roleData) => {
+        try {
+          const existingRole = await this.roleRepository.findOne({
+            where: { name: roleData.name },
+            relations: ['permissions'],
+          });
+
+          if (!existingRole) {
+            const permissions = await this.permissionRepository.findBy({
+              name: In(roleData.permissions),
+            });
+
+            if (permissions.length !== roleData.permissions.length) {
+              console.warn(
+                `Some permissions not found for role ${roleData.name}. Expected ${roleData.permissions.length}, found ${permissions.length}`
+              );
+            }
+
+            const role = this.roleRepository.create({
+              name: roleData.name,
+              description: roleData.description,
+              permissions: permissions,
+            });
+
+            await this.roleRepository.save(role);
+            console.log(
+              `Created role: ${roleData.name} with ${permissions.length} permissions`
+            );
+          } else {
+            console.log(`Role ${roleData.name} already exists`);
+          }
+        } catch (error) {
+          console.error(
+            `Failed to process role ${roleData.name}:`,
+            error.message
+          );
+        }
+      })
+    );
+  }
+}

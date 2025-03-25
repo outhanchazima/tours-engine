@@ -1,11 +1,5 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { BaseEntity } from './base.entity';
 import { Booking } from './booking.entity';
 import { Payment } from './payment.entity';
 
@@ -14,10 +8,7 @@ import { Payment } from './payment.entity';
  * Allows tracking which portion of a payment applies to which booking
  */
 @Entity('payment_bookings')
-export class PaymentBooking {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class PaymentBooking extends BaseEntity {
   @Column('decimal', { precision: 10, scale: 2 })
   amount: number;
 
@@ -26,9 +17,6 @@ export class PaymentBooking {
 
   @Column()
   bookingId: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
 
   @ManyToOne(() => Payment, (payment) => payment.paymentBookings)
   @JoinColumn({ name: 'paymentId' })

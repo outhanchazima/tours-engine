@@ -1,17 +1,7 @@
-import {
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  Index,
-  OneToMany,
-  PrimaryColumn,
-  UpdateDateColumn,
-} from 'typeorm';
-import { ulid } from 'ulid';
+import { Column, Entity, OneToMany } from 'typeorm';
+import { BaseEntity } from './base.entity';
 import { Booking } from './booking.entity';
 import { Payment } from './payment.entity';
-import { UserRole } from './user-role.entity';
 
 /**
  * User Entity - Represents a user in the tours engine system
@@ -24,25 +14,21 @@ import { UserRole } from './user-role.entity';
  * @table users
  */
 @Entity('users')
-export class User {
+export class User extends BaseEntity {
   /**
-   * Unique identifier for the user
+   * Keycloak unique identifier for authentication
    * @type {string}
-   * @generated Uses ULID for time-sortable unique identifiers
+   * @unique
    */
-  @PrimaryColumn('varchar', {
-    length: 26,
-    default: () => `'${ulid()}'`,
-  })
-  @Index() // Additional index on primary key for faster lookup
-  id: string;
+  @Column({ unique: true, nullable: false })
+  keycloakId: string;
 
   /**
    * User's unique username
    * @type {string}
    * @unique
    */
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: false })
   username: string;
 
   /**
@@ -70,43 +56,50 @@ export class User {
   lastName: string;
 
   /**
-   * Keycloak unique identifier for authentication
+   * User's phone number
    * @type {string}
-   * @unique
+   * @nullable
    */
-  @Column({ unique: true })
-  keycloakId: string;
+  @Column({ name: 'phone_number', nullable: true })
+  phoneNumber: string;
 
   /**
-   * User's roles and permissions
-   * @type {UserRole[]}
+   * Is user active
+   * @type {boolean}
+   * @default true
    */
-  @OneToMany(() => UserRole, (userRole) => userRole.user)
-  userRoles: UserRole[];
+  @Column({ default: true })
+  active: boolean;
 
   /**
-   * Timestamp of user creation
-   * @type {Date}
-   * @generated
+   * User's roles
+   * @type {string[]}
+   * @nullable
    */
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+  @Column('simple-array', { nullable: true })
+  roles: string[];
 
   /**
-   * Timestamp of last user update
-   * @type {Date}
-   * @generated
+   * User's metadata
+   * @type {Record<string, any>}
+   * @nullable
+   *
+   * @example
+   * {
+   *  "preferred_language": "en",
+   * "timezone": "America/New_York"
+   * }
    */
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
+  @Column({ type: 'simple-json', nullable: true })
+  metadata?: Record<string, unknown>;
 
   /**
-   * Soft delete timestamp
+   * User's last login timestamp
    * @type {Date}
    * @nullable
    */
-  @DeleteDateColumn({ name: 'deleted_at' })
-  deletedAt: Date;
+  @Column({ nullable: true })
+  lastLogin?: Date;
 
   /**
    * User's bookings

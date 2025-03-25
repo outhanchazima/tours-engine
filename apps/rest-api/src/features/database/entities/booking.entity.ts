@@ -1,15 +1,6 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryColumn,
-  UpdateDateColumn,
-} from 'typeorm';
-import { ulid } from 'ulid';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { BookingStatus } from '../enums/booking-status.enum';
+import { BaseEntity } from './base.entity';
 import { PaymentBooking } from './payment-booking.entity';
 import { Payment } from './payment.entity';
 import { Tour } from './tour.entity';
@@ -22,18 +13,7 @@ import { User } from './user.entity';
  * @entity
  */
 @Entity('bookings')
-export class Booking {
-  /**
-   * The unique identifier for the booking.
-   * Generated using ULID (Universally Unique Lexicographically Sortable Identifier).
-   * @type {string}
-   */
-  @PrimaryColumn('varchar', {
-    length: 26,
-    default: () => `'${ulid()}'`,
-  })
-  id?: string;
-
+export class Booking extends BaseEntity {
   /**
    * The ID of the user who made the booking.
    * Can be null for anonymous bookings.
@@ -66,14 +46,6 @@ export class Booking {
   participants: number;
 
   /**
-   * The date when the booking was made.
-   * Automatically set on creation.
-   * @type {Date}
-   */
-  @CreateDateColumn({ name: 'booking_date' })
-  bookingDate?: Date;
-
-  /**
    * The total amount for the booking.
    * Stored as decimal with 10 digits and 2 decimal places.
    * @type {number}
@@ -102,22 +74,6 @@ export class Booking {
    */
   @Column({ name: 'reference_number', unique: true })
   referenceNumber: string;
-
-  /**
-   * Timestamp of when the booking was created.
-   * Automatically set on creation.
-   * @type {Date}
-   */
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt?: Date;
-
-  /**
-   * Timestamp of when the booking was last updated.
-   * Automatically updated on each save.
-   * @type {Date}
-   */
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt?: Date;
 
   /**
    * The user who made the booking.

@@ -1,16 +1,13 @@
 import {
   Check,
   Column,
-  CreateDateColumn,
   Entity,
   Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
-  PrimaryColumn,
-  UpdateDateColumn,
 } from 'typeorm';
-import { ulid } from 'ulid';
+import { BaseEntity } from './base.entity';
 import { Booking } from './booking.entity';
 import { User } from './user.entity';
 
@@ -25,19 +22,7 @@ import { User } from './user.entity';
 @Index(['isActive', 'capacity']) // Index for filtering active tours with capacity
 @Check('"price" >= 0') // Ensure price is non-negative
 @Check('"capacity" >= 0') // Ensure capacity is non-negative
-export class Tour {
-  /**
-   * Unique identifier for the tour.
-   * Generated using ULID for time-sortable, unique identification.
-   * @type {string}
-   */
-  @PrimaryColumn('varchar', {
-    length: 26,
-    default: () => `'${ulid()}'`,
-  })
-  @Index() // Additional index on primary key for faster lookup
-  id?: string;
-
+export class Tour extends BaseEntity {
   /**
    * The display title of the tour.
    * @type {string}
@@ -143,22 +128,6 @@ export class Tour {
   @JoinColumn({ name: 'created_by_user_id' })
   @Index() // Quick user-based tour queries
   createdBy?: User;
-
-  /**
-   * Timestamp of when the tour was created.
-   * Automatically set by TypeORM.
-   * @type {Date}
-   */
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
-
-  /**
-   * Timestamp of the last update to the tour.
-   * Automatically updated by TypeORM.
-   * @type {Date}
-   */
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
 
   /**
    * Collection of bookings associated with this tour.

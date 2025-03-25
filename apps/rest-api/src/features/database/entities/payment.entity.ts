@@ -1,14 +1,6 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { PaymentStatus } from '../enums/payment-status.enum';
+import { BaseEntity } from './base.entity';
 import { PaymentBooking } from './payment-booking.entity';
 import { User } from './user.entity';
 
@@ -18,13 +10,7 @@ import { User } from './user.entity';
  * including Stripe integration details and payment status.
  */
 @Entity('payments')
-export class Payment {
-  /**
-   * Unique identifier for the payment
-   */
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Payment extends BaseEntity {
   /**
    * Reference to the user who made the payment
    */
@@ -66,18 +52,6 @@ export class Payment {
    */
   @Column({ nullable: true })
   failureReason: string;
-
-  /**
-   * Timestamp when the payment record was created
-   */
-  @CreateDateColumn()
-  createdAt: Date;
-
-  /**
-   * Timestamp when the payment record was last updated
-   */
-  @UpdateDateColumn()
-  updatedAt: Date;
 
   /**
    * Relationship to the User entity
