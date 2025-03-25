@@ -50,7 +50,10 @@ Thumbs.db
 # Environment
 .env
 
-# Postgres Data  
+# Postgres Data
 /pg
 # Sentry Config File
 .sentryclirc
+
+vite.config.*.timestamp*
+vitest.config.*.timestamp*
