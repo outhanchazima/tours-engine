@@ -16,6 +16,8 @@
   "compilerOptions": {
     "sourceMap": true,
     "inlineSources": true,
-    "sourceRoot": "/"
+    "sourceRoot": "/",
+    "strictPropertyInitialization": true,
+    "strictNullChecks": true
   }
 }
