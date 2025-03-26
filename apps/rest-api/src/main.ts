@@ -2,12 +2,14 @@
 import './sentry-config';
 
 // Now import other modules
-import { Logger } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
+import { Logger, ValidationPipe } from '@nestjs/common';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import compression from 'compression';
 import helmet from 'helmet';
 import { AppModule } from './features/app.module';
+import { AllExceptionsFilter } from './shared/filters/all-exception.filter';
+import { TransformInterceptor } from './shared/interceptors/transform.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,6 +20,25 @@ async function bootstrap() {
   // enable gzip compression.
   app.use(compression());
 
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      forbidUnknownValues: true,
+      stopAtFirstError: true,
+      validateCustomDecorators: true,
+    })
+  );
+
+  // Set Global interceptors
+  app.useGlobalInterceptors(new TransformInterceptor());
+
+  // Set Global filter (exception filter)
+  const httpAdapterHost = app.get(HttpAdapterHost);
+
+  // Use the global exception filter
+  app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost));
+
   // Cors
   app.enableCors({ origin: '*' });
 
@@ -27,6 +48,7 @@ async function bootstrap() {
       .setTitle('Tour Booking API')
       .setDescription('The tour booking API description')
       .setVersion('1.0')
+      .addBearerAuth()
       .build();
 
     const document = SwaggerModule.createDocument(app, config);
