@@ -13,7 +13,7 @@ export class PaymentBooking extends BaseEntity {
   amount: number;
 
   @Column()
-  paymentId: number;
+  paymentId: string;
 
   @Column()
   bookingId: string;

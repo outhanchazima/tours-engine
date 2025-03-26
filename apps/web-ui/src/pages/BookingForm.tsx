@@ -12,11 +12,9 @@ const BookingForm = () => {
   const navigate = useNavigate();
   const [tour, setTour] = useState<Tour | null>(null);
   const [bookingDetails, setBookingDetails] = useState<BookingDetails>({
-    tourId: parseInt(tourId || '0'),
+    tourId: tourId || '',
     participants: 1,
-    totalAmount: 0,
     specialRequirements: '',
-    referenceNumber: '',
   });
 
   useEffect(() => {
@@ -32,8 +30,6 @@ const BookingForm = () => {
         setTour(data);
         setBookingDetails(prev => ({
           ...prev,
-          totalAmount: data.price * prev.participants,
-          referenceNumber: `TOUR-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
         }));
       } catch (error) {
         console.error('Error fetching tour details:', error);
@@ -51,14 +47,14 @@ const BookingForm = () => {
         totalAmount: tour.price * prev.participants,
       }));
     }
-  }, [bookingDetails.participants, tour]);
+  }, [bookingDetails.participants, tour?.id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!tour) return;
-
+    delete bookingDetails.totalAmount;
     try {
-      const bookingResponse = await fetch('http://localhost:3000/bookings', {
+      const bookingResponse = await fetch('http://localhost:3000/booking', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -66,6 +62,8 @@ const BookingForm = () => {
         },
         body: JSON.stringify(bookingDetails),
       });
+
+      console.log("Bookng Response", bookingResponse);
 
       if (!bookingResponse.ok) throw new Error('Booking failed');
       const { sessionId } = await bookingResponse.json();
@@ -131,7 +129,6 @@ const BookingForm = () => {
           <h3 className="text-lg font-semibold mb-2">Booking Summary</h3>
           <p>Tour: {tour.name}</p>
           <p>Price per person: ${tour.price}</p>
-          <p>Reference Number: {bookingDetails.referenceNumber}</p>
           <p className="text-xl font-bold mt-2">
             Total: ${bookingDetails.totalAmount}
           </p>

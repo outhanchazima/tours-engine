@@ -64,7 +64,7 @@ export class Tour extends BaseEntity {
     scale: 2,
   })
   @Index()
-  price?: number;
+  price: number;
 
   /**
    * Currency code for the tour price (e.g., 'USD', 'EUR').

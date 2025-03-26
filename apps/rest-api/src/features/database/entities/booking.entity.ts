@@ -17,26 +17,26 @@ export class Booking extends BaseEntity {
   /**
    * The ID of the user who made the booking.
    * Can be null for anonymous bookings.
-   * @type {number}
+   * @type {string}
    */
   @Column({ name: 'user_id', nullable: true })
-  userId?: number;
+  userId?: string;
 
   /**
    * The ID of the tour being booked.
-   * @type {number}
+   * @type {string}
    */
   @Column({ name: 'tour_id' })
-  tourId: number;
+  tourId: string;
 
   /**
    * The current status of the booking.
    * Defaults to PENDING status.
-   * @type {string}
+   * @type {BookingStatus}
    * @enum {BookingStatus}
    */
   @Column({ type: 'enum', enum: BookingStatus, default: BookingStatus.PENDING })
-  status: string;
+  status: BookingStatus;
 
   /**
    * The number of participants for this booking.
@@ -50,7 +50,7 @@ export class Booking extends BaseEntity {
    * Stored as decimal with 10 digits and 2 decimal places.
    * @type {number}
    */
-  @Column('decimal', { name: 'total_amount', precision: 10, scale: 2 })
+  @Column('decimal', { name: 'total_amount', precision: 20, scale: 2 })
   totalAmount: number;
 
   /**
@@ -64,7 +64,7 @@ export class Booking extends BaseEntity {
    * Optional field that can contain specific requests.
    * @type {string}
    */
-  @Column({ name: 'special_requirements', nullable: true })
+  @Column({ name: 'special_requirements', nullable: true, type: 'text' })
   specialRequirements?: string;
 
   /**

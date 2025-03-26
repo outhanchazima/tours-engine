@@ -24,11 +24,9 @@ export interface Transaction {
 }
 
 export interface BookingDetails {
-  tourId: number;
+  tourId: string;
   participants: number;
-  totalAmount: number;
   specialRequirements?: string;
-  referenceNumber: string;
 }
 
 export interface RegisterData {

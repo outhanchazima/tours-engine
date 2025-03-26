@@ -4,6 +4,7 @@ import {
   ExceptionFilter,
   HttpException,
   HttpStatus,
+  Logger,
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
 import { SentryExceptionCaptured } from '@sentry/nestjs';
@@ -30,6 +31,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
       message: this.getErrorMessage(exception),
       error: 'Internal Server Error',
     };
+
+    Logger.error(exception);
     // Send the response
     httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
   }
