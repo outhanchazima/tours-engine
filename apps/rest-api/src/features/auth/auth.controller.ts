@@ -17,6 +17,7 @@ import { Roles } from '../../shared/decorators/roles.decorator';
 import { AuthService } from './auth.service';
 import { AuthResponseDto } from './dto/login-res.dto';
 import { LoginDto } from './dto/login.dto';
+import { ProfileResDto } from './dto/profile-res.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { RegisterDto } from './dto/register.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
@@ -44,8 +45,8 @@ export class AuthController {
     status: 409,
     description: 'User already exists',
   })
-  async register(@Body() registerDto: RegisterDto) {
-    return this.authService.register(registerDto);
+  async register(@Body() registerDto: RegisterDto): Promise<ProfileResDto> {
+    return await this.authService.register(registerDto);
   }
 
   /**

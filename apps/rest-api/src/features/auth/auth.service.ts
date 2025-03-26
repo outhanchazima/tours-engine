@@ -11,6 +11,7 @@ import { Repository } from 'typeorm';
 import { User } from '../database/entities/user.entity';
 import { AuthResponseDto } from './dto/login-res.dto';
 import { LoginDto } from './dto/login.dto';
+import { ProfileResDto } from './dto/profile-res.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { RegisterDto } from './dto/register.dto';
 import { JwtPayload } from './interfaces/jwt.interface';
@@ -66,7 +67,7 @@ export class AuthService {
    * @param registerDto Registration data transfer object
    * @returns Created user without sensitive information
    */
-  async register(registerDto: RegisterDto): Promise<Partial<User>> {
+  async register(registerDto: RegisterDto): Promise<ProfileResDto> {
     const { email, username, password, firstName, lastName } = registerDto;
     console.log(registerDto);
 
@@ -98,7 +99,17 @@ export class AuthService {
 
     await this.userRepository.save(user);
 
-    return user;
+    return {
+      id: user.id,
+      email: user.email,
+      username: user.username,
+      roles: user.roles,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      active: user.active,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
   }
 
   /**

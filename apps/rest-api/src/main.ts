@@ -20,15 +20,7 @@ async function bootstrap() {
   // enable gzip compression.
   app.use(compression());
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      transform: true,
-      whitelist: true,
-      forbidUnknownValues: true,
-      stopAtFirstError: true,
-      validateCustomDecorators: true,
-    })
-  );
+  app.useGlobalPipes(new ValidationPipe());
 
   // Set Global interceptors
   app.useGlobalInterceptors(new TransformInterceptor());

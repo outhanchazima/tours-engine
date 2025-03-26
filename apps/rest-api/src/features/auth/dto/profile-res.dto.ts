@@ -5,7 +5,7 @@ import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
  * Data Transfer Object for user registration
  * Validates and transfers registration data
  */
-export class RegisterDto {
+export class ProfileResDto {
   @ApiProperty({
     description: 'User email address',
     example: 'user@example.com',

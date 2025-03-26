@@ -8,8 +8,6 @@ import {
 import { HttpAdapterHost } from '@nestjs/core';
 import { SentryExceptionCaptured } from '@sentry/nestjs';
 
-import { Logger } from '@nestjs/common';
-
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
@@ -32,22 +30,19 @@ export class AllExceptionsFilter implements ExceptionFilter {
       message: this.getErrorMessage(exception),
       error: 'Internal Server Error',
     };
-
-    Logger.error(exception);
-
     // Send the response
     httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
   }
 
   private getErrorMessage(exception: unknown): string {
     if (exception instanceof HttpException) {
-      return exception.message;
+      return exception.response.message;
     }
 
     if (exception instanceof Error) {
       return exception.message;
     }
 
-    return 'Unexpected error occurred';
+    return String(exception);
   }
 }
