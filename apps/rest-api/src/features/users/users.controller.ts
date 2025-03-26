@@ -20,6 +20,6 @@ export class UsersController {
   @ApiBearerAuth()
   @Get('me')
   async getMe(@ActiveUser('id') userId: string): Promise<User> {
-    return this.usersService.getMe(userId);
+    return this.usersService.findOneById(userId);
   }
 }

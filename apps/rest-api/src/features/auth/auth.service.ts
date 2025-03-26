@@ -68,6 +68,7 @@ export class AuthService {
    */
   async register(registerDto: RegisterDto): Promise<Partial<User>> {
     const { email, username, password, firstName, lastName } = registerDto;
+    console.log(registerDto);
 
     // Check if user already exists
     const existingUser = await this.userRepository.findOne({
@@ -90,15 +91,12 @@ export class AuthService {
       username,
       firstName,
       lastName,
-      keycloakId: hashedPassword, // Store hashed password here
+      password: hashedPassword, // Store hashed password here
       roles: ['USER'], // Default role
       active: true,
     });
 
     await this.userRepository.save(user);
-
-    // Remove sensitive information
-    delete user.keycloakId;
 
     return user;
   }
@@ -120,7 +118,7 @@ export class AuthService {
     }
 
     // Compare provided password with stored hashed password
-    const isPasswordValid = await bcrypt.compare(password, user.keycloakId);
+    const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
@@ -224,5 +222,9 @@ export class AuthService {
       }
       throw new UnauthorizedException('Invalid access token');
     }
+  }
+
+  async getProfile(user: User): Promise<User> {
+    return await user;
   }
 }

@@ -1,3 +1,5 @@
+import { ApiHideProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 import { Column, Entity, OneToMany } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { Booking } from './booking.entity';
@@ -15,14 +17,6 @@ import { Payment } from './payment.entity';
  */
 @Entity('users')
 export class User extends BaseEntity {
-  /**
-   * Keycloak unique identifier for authentication
-   * @type {string}
-   * @unique
-   */
-  @Column({ unique: true, nullable: false })
-  keycloakId: string;
-
   /**
    * User's unique username
    * @type {string}
@@ -62,6 +56,16 @@ export class User extends BaseEntity {
    */
   @Column({ name: 'phone_number', nullable: true })
   phoneNumber: string;
+
+  /**
+   * Password hashed for security
+   * @type {string}
+   * @unique
+   */
+  @Column({ nullable: true })
+  @ApiHideProperty()
+  @Exclude() // Will not appear in the response
+  password: string;
 
   /**
    * Is user active

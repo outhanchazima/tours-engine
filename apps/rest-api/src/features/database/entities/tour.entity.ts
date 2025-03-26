@@ -62,10 +62,6 @@ export class Tour extends BaseEntity {
   @Column('decimal', {
     precision: 10,
     scale: 2,
-    transformer: {
-      to: (value: number) => value,
-      from: (value: number) => Number(value.toFixed(2)),
-    },
   })
   @Index()
   price?: number;

@@ -1,4 +1,5 @@
 import { Request } from 'express';
+import { User } from '../../database/entities/user.entity';
 
 /**
  * Represents the payload contained in a JWT token
@@ -16,5 +17,5 @@ export interface JwtPayload {
  * Extended request interface to include user information
  */
 export interface AuthenticatedRequest extends Request {
-  user: JwtPayload;
+  user: User;
 }
