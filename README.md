@@ -4,87 +4,140 @@
 
 ✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/js?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+# Tours Engine 🌍✈️
 
-## Finish your CI setup
+## Quick Overview
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/eki9CJKdSI)
+Tours Engine is a comprehensive tour booking web application with a React frontend and NestJS backend, designed to simplify tour management and booking.
 
+## 🚀 Tech Stack
 
-## Generate a library
+- **Frontend**: React
+- **Backend**: NestJS
+- **Database**: PostgreSQL
+- **Containerization**: Docker
+- **Monorepo**: Nx Workspaces
 
-```sh
-npx nx g @nx/js:lib packages/pkg1 --publishable --importPath=@my-org/pkg1
+## 📦 Features
+
+- User Authentication
+- Tour Browsing
+- Booking Management
+- User Profiles
+- Secure Payment Processing (Stripe)
+
+## 🔧 Prerequisites
+
+- Node.js (v16+)
+- npm or Yarn
+- Docker (optional, but recommended)
+- PostgreSQL
+
+## 📋 Installation Steps
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/tours-engine.git
+cd tours-engine
 ```
 
-## Run tasks
+### 2. Install Dependencies
 
-To build the library use:
-
-```sh
-npx nx build pkg1
+```bash
+npm install
+# or
+yarn install
 ```
 
-To run any task with Nx use:
+### 3. Configure Environment
 
-```sh
-npx nx <target> <project-name>
+- Create a `.env` file in the project app(rest-api) under apps
+- Check the sample .env.local 
+- Add necessary configuration:
+
+  ```
+  DATABASE_URL=postgresql://username:password@localhost:5432/toursdb
+  STRIPE_SECRET_KEY=your_stripe_secret_key
+  JWT_SECRET=your_jwt_secret
+  ```
+
+### 4. Database Setup
+
+```bash
+# If using Docker
+docker-compose up -d
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+### 5. Run the Application
+ - Server runs on http://localhost:3000/
+ - Client runs on http://localhost:4200/
+ - SERVER Swagger Docs run on http://localhost:3000/api
+ 
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+```bash
+# Start Backend
+nx serve rest-api
 
-## Versioning and releasing
+# Start Frontend
+nx serve web-ui
 
-To version and release the library use
-
-```
-npx nx release
-```
-
-Pass `--dry-run` to see what would happen without actually releasing the library.
-
-[Learn more about Nx release &raquo;](hhttps://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Keep TypeScript project references up to date
-
-Nx automatically updates TypeScript [project references](https://www.typescriptlang.org/docs/handbook/project-references.html) in `tsconfig.json` files to ensure they remain accurate based on your project dependencies (`import` or `require` statements). This sync is automatically done when running tasks such as `build` or `typecheck`, which require updated references to function correctly.
-
-To manually trigger the process to sync the project graph dependencies information to the TypeScript project references, run the following command:
-
-```sh
-npx nx sync
+# Alternatively you can run both the client and server in paralle 
+npm run serve
 ```
 
-You can enforce that the TypeScript project references are always in the correct state when running in CI by adding a step to your CI job configuration that runs the following command:
+## 🐳 Docker Deployment
 
-```sh
-npx nx sync:check
+```bash
+# Build the apps first
+npm run build
+
+# Run Docker Compose
+docker-compose build
+docker-compose up
 ```
 
-[Learn more about nx sync](https://nx.dev/reference/nx-commands#sync)
+## 🔒 Security Features
 
+- JWT Authentication
+- Role-Based Access Control
+- Input Validation
+- HTTPS Encryption
+- Stripe Secure Payments
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## 🧪 Testing
 
-## Install Nx Console
+```bash
+# Run Unit Tests
+nx test web-ui
+nx test rest-api
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+# Run E2E Tests
+nx e2e web-ui-e2e
+```
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## 📦 Build for Production
 
-## Useful links
+```bash
+nx build web-ui --prod
+nx build rest-api --prod
 
-Learn more:
+# this will build both the frontend app and backend app in parallel
+npm run build
+```
 
-- [Learn more about this workspace setup](https://nx.dev/nx-api/js?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## 📝 License
 
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+[Your License - e.g., MIT]
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📞 Support
+
+For issues or questions, please open a GitHub issue.
