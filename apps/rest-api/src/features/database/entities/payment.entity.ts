@@ -1,4 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  Relation,
+} from 'typeorm';
 import { PaymentStatus } from '../enums/payment-status.enum';
 import { BaseEntity } from './base.entity';
 import { PaymentBooking } from './payment-booking.entity';
@@ -20,7 +27,7 @@ export class Payment extends BaseEntity {
   /**
    * Stripe payment intent ID for tracking the payment in Stripe
    */
-  @Column({ nullable: true })
+  @Column({ unique: true })
   stripePaymentIntentId: string;
 
   /**
@@ -59,11 +66,11 @@ export class Payment extends BaseEntity {
    */
   @ManyToOne(() => User, (user) => user.payments)
   @JoinColumn({ name: 'userId' })
-  user: User;
+  user: Relation<User>;
 
   /**
    * Relationship to track all bookings associated with this payment
    */
   @OneToMany(() => PaymentBooking, (paymentBooking) => paymentBooking.payment)
-  paymentBookings: PaymentBooking[];
+  paymentBookings: Relation<PaymentBooking[]>;
 }

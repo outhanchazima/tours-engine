@@ -1,4 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  Relation,
+} from 'typeorm';
 import { BookingStatus } from '../enums/booking-status.enum';
 import { BaseEntity } from './base.entity';
 import { PaymentBooking } from './payment-booking.entity';
@@ -35,14 +42,18 @@ export class Booking extends BaseEntity {
    * @type {BookingStatus}
    * @enum {BookingStatus}
    */
-  @Column({ type: 'enum', enum: BookingStatus, default: BookingStatus.PENDING })
+  @Column({
+    type: 'char',
+    enum: BookingStatus,
+    default: BookingStatus.PENDING,
+  })
   status: BookingStatus;
 
   /**
    * The number of participants for this booking.
    * @type {number}
    */
-  @Column()
+  @Column({ type: 'int', default: 1 })
   participants: number;
 
   /**
@@ -52,12 +63,6 @@ export class Booking extends BaseEntity {
    */
   @Column('decimal', { name: 'total_amount', precision: 20, scale: 2 })
   totalAmount: number;
-
-  /**
-   * Remove the direct payment relation
-   */
-  @Column({ name: 'payment_id', nullable: true })
-  paymentId?: string;
 
   /**
    * Any special requirements or notes for the booking.
@@ -82,7 +87,7 @@ export class Booking extends BaseEntity {
    */
   @ManyToOne(() => User, (user) => user.bookings)
   @JoinColumn({ name: 'user_id' })
-  user?: User;
+  user?: Relation<User>;
 
   /**
    * The tour that was booked.
@@ -91,19 +96,13 @@ export class Booking extends BaseEntity {
    */
   @ManyToOne(() => Tour, (tour) => tour.bookings)
   @JoinColumn({ name: 'tour_id' })
-  tour?: Tour;
+  tour?: Relation<Tour>;
 
   /**
    * The payments associated with this booking.
    * Represents the one-to-many relationship with Payment entity.
    * @type {Payment[]}
    */
-  @OneToMany(() => Payment, (payment) => payment.booking)
-  payments?: Payment[];
-
-  /**
-   * Relationship to track all payments associated with this booking
-   */
   @OneToMany(() => PaymentBooking, (paymentBooking) => paymentBooking.booking)
-  paymentBookings: PaymentBooking[];
+  paymentBookings?: Relation<PaymentBooking[]>;
 }

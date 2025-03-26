@@ -5,7 +5,6 @@ import {
   Param,
   Patch,
   Post,
-  Request,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -44,7 +43,6 @@ export class BookingController {
   @ApiResponse({ status: 400, description: 'Bad Request' })
   async createBooking(
     @ActiveUser() user: User,
-    @Request() req: any,
     @Body() createBookingDto: CreateBookingDto
   ) {
     return this.bookingService.createBooking(user, createBookingDto);
