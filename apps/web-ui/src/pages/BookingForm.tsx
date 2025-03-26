@@ -22,7 +22,7 @@ const BookingForm = () => {
   useEffect(() => {
     const fetchTourDetails = async () => {
       try {
-        const response = await fetch(`http://[::1]:3000/tours/${tourId}`, {
+        const response = await fetch(`http://localhost:3000/tours/${tourId}`, {
           headers: {
             Authorization: `Bearer ${user?.token}`,
           },
@@ -58,7 +58,7 @@ const BookingForm = () => {
     if (!tour) return;
 
     try {
-      const bookingResponse = await fetch('http://[::1]:3000/bookings', {
+      const bookingResponse = await fetch('http://localhost:3000/bookings', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

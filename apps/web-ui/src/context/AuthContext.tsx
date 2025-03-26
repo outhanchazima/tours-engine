@@ -43,12 +43,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       const data = await response.json();
+      console.log(data)
       const userData = {
-        email,
-        username: data.username,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        token: data.token,
+        id: data.user.id,
+        roles: data.user.role,
+        username: data.user.username,
+        firstName: data.user.firstName,
+        lastName: data.user.lastName,
+        email: data.user.email,
+        token: data.accessToken,
+        refreshToken: data.refreshToken,
       };
       setUser(userData);
       localStorage.setItem('user', JSON.stringify(userData));
