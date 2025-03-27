@@ -1,0 +1,1740 @@
+{
+	"info": {
+		"_postman_id": "aaabdd05-3cd0-402c-98ce-586d3c84500f",
+		"name": "Tour Booking API",
+		"description": "The tour booking API description",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22608915"
+	},
+	"item": [
+		{
+			"name": "App",
+			"item": [
+				{
+					"name": "App Controller get Health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/health",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"health"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/health",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"health"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "App Controller get Error",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/debug-sentry",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"debug-sentry"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/debug-sentry",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"debug-sentry"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register a new user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"user2@example.com\",\n\t\"username\": \"johndoe2\",\n\t\"password\": \"StrongPassword123!\",\n\t\"firstName\": \"John\",\n\t\"lastName\": \"Doe\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "User successfully registered",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"user@example.com\",\n\t\"username\": \"johndoe\",\n\t\"password\": \"StrongPassword123!\",\n\t\"firstName\": \"John\",\n\t\"lastName\": \"Doe\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "User already exists",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"user@example.com\",\n\t\"username\": \"johndoe\",\n\t\"password\": \"StrongPassword123!\",\n\t\"firstName\": \"John\",\n\t\"lastName\": \"Doe\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Login and obtain tokens",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the response body",
+									"var jsonData = pm.response.json();",
+									"",
+									"// Set access token",
+									"pm.environment.set(\"ACCESS_TOKEN\", jsonData.accessToken);",
+									"",
+									"// Set refresh token",
+									"pm.environment.set(\"REFRESH_TOKEN\", jsonData.refreshToken);",
+									"",
+									"// Set user-related environment variables",
+									"pm.environment.set(\"USER_ID\", jsonData.user.id);",
+									"pm.environment.set(\"USER_EMAIL\", jsonData.user.email);",
+									"pm.environment.set(\"USERNAME\", jsonData.user.username);",
+									"",
+									"// Optional: Set user roles as a string",
+									"pm.environment.set(\"USER_ROLES\", jsonData.user.roles.join(\",\"));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"user2@example.com\",\n\t\"password\": \"StrongPassword123!\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Login successful",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"user@example.com\",\n\t\"password\": \"StrongPassword123!\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n\t\"accessToken\": \"incididunt ex irure\",\n\t\"refreshToken\": \"deserunt\",\n\t\"user\": {}\n}"
+						},
+						{
+							"name": "Invalid credentials",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"user@example.com\",\n\t\"password\": \"StrongPassword123!\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Refresh access token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"refreshToken\": \"{{REFRESH_TOKEN}}\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/refresh",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Tokens refreshed successfully",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"refreshToken\": \"dadjakdadjlkajor4-tjrnvvmnvgkglskdg[po4tpwtevmms gret4oo-o-2r5223432\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/refresh",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"refresh"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n\t\"accessToken\": \"incididunt ex irure\",\n\t\"refreshToken\": \"deserunt\",\n\t\"user\": {}\n}"
+						},
+						{
+							"name": "Invalid or expired refresh token",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"refreshToken\": \"dadjakdadjlkajor4-tjrnvvmnvgkglskdg[po4tpwtevmms gret4oo-o-2r5223432\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/refresh",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"refresh"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Get user profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/auth/profile",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"profile"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "User profile retrieved successfully",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/auth/profile",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"profile"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/auth/profile",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"profile"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "tours",
+			"item": [
+				{
+					"name": "Create a new tour",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Pre-request script for generating fake tour data",
+									"const cities = [",
+									"    \"Paris, France\", ",
+									"    \"Rome, Italy\", ",
+									"    \"Barcelona, Spain\", ",
+									"    \"Amsterdam, Netherlands\", ",
+									"    \"Prague, Czech Republic\", ",
+									"    \"Venice, Italy\", ",
+									"    \"Berlin, Germany\", ",
+									"    \"Vienna, Austria\"",
+									"];",
+									"",
+									"const tourTitles = [",
+									"    \"City Highlights Tour\",",
+									"    \"Historical Landmarks Expedition\",",
+									"    \"Cultural Heritage Journey\",",
+									"    \"Architectural Wonders Trip\",",
+									"    \"Scenic Exploration Adventure\",",
+									"    \"Hidden Gems Discovery Tour\"",
+									"];",
+									"",
+									"const descriptions = [",
+									"    \"Explore the most iconic locations and discover the hidden secrets of this amazing destination.\",",
+									"    \"An unforgettable journey through historic streets, stunning landmarks, and local culture.\",",
+									"    \"Experience the best of the city with expert guides and immersive experiences.\",",
+									"    \"A comprehensive tour that takes you through the heart of the city's most remarkable sites.\",",
+									"    \"Discover the rich history, vibrant culture, and breathtaking landscapes of this incredible destination.\"",
+									"];",
+									"",
+									"// Generate random tour data",
+									"const fakeData = {",
+									"    title: tourTitles[Math.floor(Math.random() * tourTitles.length)],",
+									"    location: cities[Math.floor(Math.random() * cities.length)],",
+									"    description: descriptions[Math.floor(Math.random() * descriptions.length)],",
+									"    duration: Math.floor(Math.random() * 10) + 3, // Random duration between 3-12 days",
+									"    price: Number((Math.random() * 1500 + 500).toFixed(2)), // Random price between 500-2000",
+									"    currency: \"EUR\",",
+									"    capacity: Math.floor(Math.random() * 30) + 10, // Random capacity between 10-40",
+									"    imageUrls: [",
+									"        `https://picsum.photos/seed/${Math.floor(Math.random() * 1000)}/800/600`",
+									"    ]",
+									"};",
+									"",
+									"// Set the generated data as the request body",
+									"pm.request.body.raw = JSON.stringify(fakeData);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the response body",
+									"var jsonData = pm.response.json();",
+									"",
+									"// Set the environment variable with the last created tour ID",
+									"pm.environment.set(\"LAST_CREATED_TOUR_ID\", jsonData.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Paris City Tour\",\n\t\"location\": \"Paris, France\",\n\t\"description\": \"Explore the beautiful city of Paris...\",\n\t\"duration\": 7,\n\t\"price\": 999.99,\n\t\"currency\": \"EUR\",\n\t\"capacity\": 20,\n\t\"imageUrls\": [\n\t\t\"http://example.com/image1.jpg\"\n\t]\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/tours",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tours"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "The tour has been successfully created.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"title\": \"Paris City Tour\",\n\t\"location\": \"Paris, France\",\n\t\"description\": \"Explore the beautiful city of Paris...\",\n\t\"duration\": 7,\n\t\"price\": 999.99,\n\t\"currency\": \"EUR\",\n\t\"capacity\": 20,\n\t\"imageUrls\": [\n\t\t\"http://example.com/image1.jpg\"\n\t]\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/tours",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"tours"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{}"
+						},
+						{
+							"name": "Forbidden.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"title\": \"Paris City Tour\",\n\t\"location\": \"Paris, France\",\n\t\"description\": \"Explore the beautiful city of Paris...\",\n\t\"duration\": 7,\n\t\"price\": 999.99,\n\t\"currency\": \"EUR\",\n\t\"capacity\": 20,\n\t\"imageUrls\": [\n\t\t\"http://example.com/image1.jpg\"\n\t]\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/tours",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"tours"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Get all tours",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/tours?page=1&limit=10&sortBy=createdAt&sortOrder=ASC&name=officia consequat non nostr&email=officia consequat non nostr&status=officia consequat non nostr",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tours"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number for pagination (default: 1)"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Number of items per page (default: 10)"
+								},
+								{
+									"key": "sortBy",
+									"value": "createdAt",
+									"description": "Field to sort results by"
+								},
+								{
+									"key": "sortOrder",
+									"value": "ASC",
+									"description": "Sort order (ascending or descending)"
+								},
+								{
+									"key": "name",
+									"value": "officia consequat non nostr",
+									"description": "Filter by name"
+								},
+								{
+									"key": "email",
+									"value": "officia consequat non nostr",
+									"description": "Filter by email"
+								},
+								{
+									"key": "status",
+									"value": "officia consequat non nostr",
+									"description": "Filter by status"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/tours?page=1&limit=10&sortBy=createdAt&sortOrder=ASC&name=officia consequat non nostr&email=officia consequat non nostr&status=officia consequat non nostr",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"tours"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1",
+											"description": "Page number for pagination (default: 1)"
+										},
+										{
+											"key": "limit",
+											"value": "10",
+											"description": "Number of items per page (default: 10)"
+										},
+										{
+											"key": "sortBy",
+											"value": "createdAt",
+											"description": "Field to sort results by"
+										},
+										{
+											"key": "sortOrder",
+											"value": "ASC",
+											"description": "Sort order (ascending or descending)"
+										},
+										{
+											"key": "name",
+											"value": "officia consequat non nostr",
+											"description": "Filter by name"
+										},
+										{
+											"key": "email",
+											"value": "officia consequat non nostr",
+											"description": "Filter by email"
+										},
+										{
+											"key": "status",
+											"value": "officia consequat non nostr",
+											"description": "Filter by status"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Get a tour by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/tours/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tours",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "officia consequat non nostr",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Return the tour.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/tours/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"tours",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{}"
+						},
+						{
+							"name": "Tour not found.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/tours/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"tours",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Update a tour",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Paris City Tour\",\n\t\"location\": \"Paris, France\",\n\t\"description\": \"Explore the beautiful city of Paris...\",\n\t\"duration\": 7,\n\t\"price\": 999.99,\n\t\"currency\": \"EUR\",\n\t\"capacity\": 20,\n\t\"imageUrls\": [\n\t\t\"http://example.com/image1.jpg\"\n\t]\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/tours/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tours",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "officia consequat non nostr",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "The tour has been successfully updated.",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"title\": \"Paris City Tour\",\n\t\"location\": \"Paris, France\",\n\t\"description\": \"Explore the beautiful city of Paris...\",\n\t\"duration\": 7,\n\t\"price\": 999.99,\n\t\"currency\": \"EUR\",\n\t\"capacity\": 20,\n\t\"imageUrls\": [\n\t\t\"http://example.com/image1.jpg\"\n\t]\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/tours/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"tours",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{}"
+						}
+					]
+				},
+				{
+					"name": "Delete a tour",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/tours/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tours",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{LAST_CREATED_TOUR_ID}}",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "The tour has been successfully deleted.",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/tours/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"tours",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Booking",
+			"item": [
+				{
+					"name": "Create a new booking",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"tourId\": \"fugiat ut dolor commodo\",\n\t\"participants\": 1,\n\t\"specialRequirements\": \"pariatur veniam\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/booking",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Booking created successfully",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"tourId\": \"fugiat ut dolor commodo\",\n\t\"participants\": -10550728.542803258,\n\t\"specialRequirements\": \"pariatur veniam\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/booking",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"booking"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{}"
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"tourId\": \"fugiat ut dolor commodo\",\n\t\"participants\": -10550728.542803258,\n\t\"specialRequirements\": \"pariatur veniam\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/booking",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"booking"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Get a booking by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/booking/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"booking",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "24640430.045772105",
+									"description": "(Required) Booking ID"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Booking found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/booking/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"booking",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{}"
+						},
+						{
+							"name": "Booking not found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/booking/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"booking",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Update a booking by ID",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"tourId\": \"do minim consectetur\",\n\t\"participants\": -50789130.00557659,\n\t\"specialRequirements\": \"sit labore amet\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/booking/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"booking",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "24640430.045772105",
+									"description": "(Required) Booking ID"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Booking updated successfully",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"tourId\": \"do minim consectetur\",\n\t\"participants\": -50789130.00557659,\n\t\"specialRequirements\": \"sit labore amet\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/booking/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"booking",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{}"
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"tourId\": \"do minim consectetur\",\n\t\"participants\": -50789130.00557659,\n\t\"specialRequirements\": \"sit labore amet\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/booking/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"booking",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Booking not found",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"tourId\": \"do minim consectetur\",\n\t\"participants\": -50789130.00557659,\n\t\"specialRequirements\": \"sit labore amet\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/booking/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"booking",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "Users Controller get Me",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get logged in user's details",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/me",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"me"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{}"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/me",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"me"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Payments",
+			"item": [
+				{
+					"name": "Payments Controller handle Webhook",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "stripe-signature",
+								"value": "officia consequat non nostr",
+								"description": "(Required) "
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/payment/stripe-webhook",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"payment",
+								"stripe-webhook"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "stripe-signature",
+										"value": "officia consequat non nostr",
+										"description": "(Required) "
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/payment/stripe-webhook",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"payment",
+										"stripe-webhook"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{ACCESS_TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000"
+		},
+		{
+			"key": "ACCESS_TOKEN",
+			"value": ""
+		},
+		{
+			"key": "REFRESH_TOKEN",
+			"value": ""
+		},
+		{
+			"key": "USER_ID",
+			"value": ""
+		},
+		{
+			"key": "USER_EMAIL",
+			"value": ""
+		},
+		{
+			"key": "USERNAME",
+			"value": ""
+		},
+		{
+			"key": "USER_ROLES",
+			"value": ""
+		},
+		{
+			"key": "LAST_CREATED_TOUR_ID",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
