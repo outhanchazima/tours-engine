@@ -14,17 +14,14 @@ const Home = () => {
   useEffect(() => {
     const fetchTours = async () => {
       try {
-        const response = await fetch('http://localhost:3000/tours?page=1&limit=10&sortBy=createdAt', {
+        const response = await fetch('/api/tours?page=1&limit=10&sortBy=createdAt', {
           headers: {
             'Content-Type': 'application/json',
-            // Add authorization header if user is logged in
             ...(user && user.token && { 'Authorization': `Bearer ${user.token}` }),
           },
         });
-        console.log(response);
         if (!response.ok) throw new Error('Failed to fetch tours');
         const data = await response.json();
-        // Ensure data is an array before setting it
         if (Array.isArray(data.data)) {
           setTours(data.data);
         } else if (data.tours && Array.isArray(data.tours)) {
@@ -36,14 +33,14 @@ const Home = () => {
       } catch (error) {
         console.error('Error fetching tours:', error);
         setError('Unable to load tours at the moment');
-        setTours([]); // Ensure tours is always an array
+        setTours([]);
       } finally {
         setLoading(false);
       }
     };
 
     fetchTours();
-  }, []);
+  }, [user?.token]);
 
   const handleBookNow = (tourId: string) => {
     if (!user) {
@@ -101,8 +98,8 @@ const Home = () => {
       {tours.map((tour) => (
         <div key={tour.id} className="bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition-transform duration-200">
           <img
-            src={tour.image}
-            alt={tour.name}
+            src={tour.imageUrls[0]}
+            alt={tour.title}
             className="w-full h-48 object-cover"
           />
           <div className="p-6">

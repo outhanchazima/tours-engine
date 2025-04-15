@@ -9,7 +9,6 @@ import {
 import { BookingStatus } from '../enums/booking-status.enum';
 import { BaseEntity } from './base.entity';
 import { PaymentBooking } from './payment-booking.entity';
-import { Payment } from './payment.entity';
 import { Tour } from './tour.entity';
 import { User } from './user.entity';
 
@@ -43,7 +42,7 @@ export class Booking extends BaseEntity {
    * @enum {BookingStatus}
    */
   @Column({
-    type: 'char',
+    type: 'varchar',
     enum: BookingStatus,
     default: BookingStatus.PENDING,
   })

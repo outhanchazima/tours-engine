@@ -1,10 +1,12 @@
 export interface Tour {
   id: string;
-  name: string;
+  title: string;
   description: string;
   price: number;
   duration: number;
-  image: string;
+  imageUrls: string[];
+  currency?: string;
+  capacity?: number;
 }
 
 export interface User {

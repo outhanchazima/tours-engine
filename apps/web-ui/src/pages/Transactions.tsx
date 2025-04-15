@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Transaction } from '../types';
 
@@ -10,7 +10,7 @@ const Transactions = () => {
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const response = await fetch('http://[::1]:3000/transactions', {
+        const response = await fetch('/api/transactions', {
           headers: {
             Authorization: `Bearer ${user?.token}`,
           },
